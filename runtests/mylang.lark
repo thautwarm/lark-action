@@ -1,0 +1,16 @@
+                                          
+
+                                              
+  
+              
+                        
+  
+
+
+        
+start : ESCAPED_STRING -> start_0                                                                  
+      | "%" start -> start_1                                    
+
+%import common.WS
+%import common.ESCAPED_STRING
+%ignore WS

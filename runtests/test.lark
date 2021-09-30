@@ -1,0 +1,16 @@
+%mkrepl # generate a repl for you; not necessary
+
+# inline python code into the generated parser
+%%
+def my_func():
+    print("call myfunc")
+%%
+
+
+        
+start : ESCAPED_STRING -> { $1 } # $1 accesses the 1-st component
+      | "%" start      -> my_func()
+
+%import common.WS
+%import common.ESCAPED_STRING
+%ignore WS
