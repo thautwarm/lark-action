@@ -7,6 +7,9 @@ Features:
 1. inline python code
 2. %mkrepl
 3. Use `#` for comments instead of `//`.
+4. Use `$1`, `$2`, ... to acccess the `i`-th intermediate result.
+5. Use `@1`, `@2`, ... to access their locations(for token only)
+5. Use `*1`, `*2`, ... to access the lexeme of tokens(for token only)
 
 (**CONFESS: I develop this because the existing tools are crazily shitty.**)
 
@@ -43,3 +46,5 @@ input 'q' and exit.
 call myfunc
 None
 ```
+
+

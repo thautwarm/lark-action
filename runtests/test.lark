@@ -2,14 +2,14 @@
 
 # inline python code into the generated parser
 %%
-def my_func():
-    print("call myfunc")
+def my_func(loc, value):
+    print(f"call myfunc with loc={loc} and value={value} ")
 %%
 
 
         
 start : ESCAPED_STRING -> $1 # $1 accesses the 1-st component
-      | "%" start      -> my_func()
+      | "%" start      -> my_func(@1, *1)
 
 %import common.WS
 %import common.ESCAPED_STRING

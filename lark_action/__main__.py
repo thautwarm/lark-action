@@ -54,12 +54,12 @@ class Modify(Transformer):
 
     def get_location(self, args):
         i = int(str(args[-1]))
-        value = f"__get_location(__args[{i}-1])"
+        value = f"_get_location(__args[{i}-1])"
         return Token("", value, column=args[0].column, end_column=args[1].end_column)
 
     def get_value(self, args):
         i = int(str(args[-1]))
-        value = f"__get_value(__args[{i}-1])"
+        value = f"_get_value(__args[{i}-1])"
         return Token("", value, column=args[0].column, end_column=args[1].end_column)
 
     def rule(self, args):
@@ -117,10 +117,10 @@ def main(filename: str, package: str = "", module: str = "mylang"):
     transformer_src_code = modifier.python_file.getvalue()
     with open(os.path.join(package_path, module + ".py"), "w", encoding="utf-8") as f:
         print("# Generated from lark-action.", file=f)
-        print("def __get_location(token):", file=f)
+        print("def _get_location(token):", file=f)
         print("    return (token.line, token.column)", file=f)
         print(file=f)
-        print("def __get_value(token):", file=f)
+        print("def _get_value(token):", file=f)
         print("    return token.value", file=f)
         print(file=f)
         for each in modifier.inline_codes:
