@@ -23,7 +23,7 @@ def my_func():
 
 
         
-start : ESCAPED_STRING -> { $1 } # $1 accesses the 1-st component
+start : ESCAPED_STRING -> $1  # '$1' accesses the 1-st component
       | "%" start      -> my_func()
 
 %import common.WS
