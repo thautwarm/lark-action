@@ -128,7 +128,7 @@ def main(filename: str, package: str = "", module: str = "mylang"):
 
         full_module = ".".join([*filter(None, package.split(".")), module])
         print(file=f)
-        print(f"from {full_module}_raw import Transformer, Lark_StandAlone", file=f)
+        print(f"from {full_module}_raw import Transformer, Lark_StandAlone, Tree", file=f)
         print(f"class {module}_Transformer(Transformer):", file=f)
         print(indent(transformer_src_code, " " * 4), file=f)
         print(file=f)
@@ -140,6 +140,8 @@ def main(filename: str, package: str = "", module: str = "mylang"):
 
         print()
         repl_code = r"""
+        import prettyprinter
+        prettyprinter.install_extras(["dataclasses"])
         while True:
             print("input q and exit.")
             source = input("> ")
@@ -147,7 +149,12 @@ def main(filename: str, package: str = "", module: str = "mylang"):
                 break
             if not source.strip():
                 continue
-            print(parser.parse(source))"""
+            res = parser.parse(source)
+            if not isinstance(res, Tree):
+                prettyprinter.pprint(res)
+            else:
+                print(res)
+            """
         print(f"if __name__ == {'__main__'!r}:", file=f)
         print(repl_code, file=f)
 

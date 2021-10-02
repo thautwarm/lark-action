@@ -200,11 +200,9 @@ TOKEN: /_?[A-Z][_A-Z0-9]*/
 LARK_STRING: _STRING "i"?
 REGEXP: /\/(?!\/)(\\\/|\\\\|[^\/])*?\/[imslux]*/
 
-
 // Other terminals
 
 _NL : /\r?\n[\t ]*/ 
-_NEWLINE: ( _NL | COMMENT )+
 
 %ignore /[\t \f]+/  // WS
 %ignore /\\[\t \f]*\r?\n/   // LINE_CONT
