@@ -101,6 +101,8 @@ def main(filename: str, package: str = "", module: str = "mylang"):
 
     old_args = sys.argv.copy()
     sys.argv.clear()
+    out_path = os.path.join(package_path, module + "_raw.py")
+
     sys.argv.extend(
         [
             "",
@@ -108,22 +110,35 @@ def main(filename: str, package: str = "", module: str = "mylang"):
             "-c",
             "--keep_all_tokens",
             "-o",
-            os.path.join(package_path, module + "_raw.py"),
+            out_path
         ]
     )
+    # print(out_path)
+    # with open(out_path, 'r') as f:
+    #     gsrc = f.read()
+
+    # with open(out_path, 'w') as f:
+    #     f.write("from contextlib import suppress\n" + gsrc)
     _main()
     sys.argv.clear()
     sys.argv.extend(old_args)
     transformer_src_code = modifier.python_file.getvalue()
     with open(os.path.join(package_path, module + ".py"), "w", encoding="utf-8") as f:
+        inline_codes = modifier.inline_codes
         print("# Generated from lark-action.", file=f)
-        print("def _get_location(token):", file=f)
-        print("    return (token.line, token.column)", file=f)
+        if inline_codes:
+            inline_codes = iter(inline_codes)
+            print(file=f)
+            print(next(inline_codes), file=f)
+        print("def if '_get_location' not in globals(): ")
+        print("    def _get_location(token):", file=f)
+        print("        return (token.line, token.column)", file=f)
         print(file=f)
-        print("def _get_value(token):", file=f)
-        print("    return token.value", file=f)
+        print("def if '_get_value' not in globals(): ")
+        print("    def _get_value(token):", file=f)
+        print("        return token.value", file=f)
         print(file=f)
-        for each in modifier.inline_codes:
+        for each in inline_codes:
             print(each, file=f)
 
         full_module = ".".join([*filter(None, package.split(".")), module])
